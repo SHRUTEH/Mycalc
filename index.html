@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="video-background">
+        <video autoplay muted loop id="narutoVideo">
+            <source src="https://assets.codepen.io/3364143/7btrrd.mp4" type="video/mp4">
+        </video>
+    </div>
+    
+    <div class="calculator" id="calculator">
+        <div class="calculator-title">Ninja Calculator</div>
+        <div class="calculator-display">
+            <div class="history"></div>
+            <div class="current-input">0</div>
+        </div>
+        
+        <div class="calculator-tabs">
+            <button class="tab-btn active" data-tab="standard">Standard</button>
+            <button class="tab-btn" data-tab="scientific">Scientific</button>
+            <button class="tab-btn" data-tab="conversion">Conversion</button>
+            <button class="tab-btn" data-tab="special">Special</button>
+        </div>
+        
+        <div class="calculator-panels">
+            <!-- Standard Calculator Panel -->
+            <div class="panel active" id="standard-panel">
+                <div class="calculator-buttons">
+                    <!-- Memory Operations -->
+                    <button class="btn memory" data-action="memory-clear">MC</button>
+                    <button class="btn memory" data-action="memory-recall">MR</button>
+                    <button class="btn memory" data-action="memory-add">M+</button>
+                    <button class="btn memory" data-action="memory-subtract">M-</button>
+                    
+                    <!-- Clear Operations -->
+                    <button class="btn clear" data-action="clear">C</button>
+                    <button class="btn clear" data-action="backspace">⌫</button>
+                    <button class="btn operator" data-action="divide">÷</button>
+                    <button class="btn operator" data-action="multiply">×</button>
+                    
+                    <!-- Numbers and Basic Operations -->
+                    <button class="btn number">7</button>
+                    <button class="btn number">8</button>
+                    <button class="btn number">9</button>
+                    <button class="btn operator" data-action="subtract">-</button>
+                    
+                    <button class="btn number">4</button>
+                    <button class="btn number">5</button>
+                    <button class="btn number">6</button>
+                    <button class="btn operator" data-action="add">+</button>
+                    
+                    <button class="btn number">1</button>
+                    <button class="btn number">2</button>
+                    <button class="btn number">3</button>
+                    <button class="btn equals" data-action="calculate">=</button>
+                    
+                    <button class="btn number zero">0</button>
+                    <button class="btn number">.</button>
+                </div>
+            </div>
+            
+            <!-- Scientific Calculator Panel -->
+            <div class="panel" id="scientific-panel">
+                <div class="calculator-buttons scientific">
+                    <button class="btn function" data-action="square">x²</button>
+                    <button class="btn function" data-action="cube">x³</button>
+                    <button class="btn function" data-action="power">x^y</button>
+                    <button class="btn function" data-action="sqrt">√</button>
+                    
+                    <button class="btn function" data-action="sin">sin</button>
+                    <button class="btn function" data-action="cos">cos</button>
+                    <button class="btn function" data-action="tan">tan</button>
+                    <button class="btn function" data-action="factorial">x!</button>
+                    
+                    <button class="btn function" data-action="log">log</button>
+                    <button class="btn function" data-action="ln">ln</button>
+                    <button class="btn function" data-action="pi">π</button>
+                    <button class="btn function" data-action="e">e</button>
+                    
+                    <button class="btn clear" data-action="clear">C</button>
+                    <button class="btn clear" data-action="backspace">⌫</button>
+                    <button class="btn operator" data-action="divide">÷</button>
+                    <button class="btn operator" data-action="multiply">×</button>
+                    
+                    <button class="btn number">7</button>
+                    <button class="btn number">8</button>
+                    <button class="btn number">9</button>
+                    <button class="btn operator" data-action="subtract">-</button>
+                    
+                    <button class="btn number">4</button>
+                    <button class="btn number">5</button>
+                    <button class="btn number">6</button>
+                    <button class="btn operator" data-action="add">+</button>
+                    
+                    <button class="btn number">1</button>
+                    <button class="btn number">2</button>
+                    <button class="btn number">3</button>
+                    <button class="btn equals" data-action="calculate">=</button>
+                    
+                    <button class="btn number zero">0</button>
+                    <button class="btn number">.</button>
+                </div>
+            </div>
+            
+            <!-- Conversion Panel -->
+            <div class="panel" id="conversion-panel">
+                <div class="conversion-container">
+                    <div class="conversion-type">
+                        <button class="conversion-tab active" data-conversion="length">Length</button>
+                        <button class="conversion-tab" data-conversion="weight">Weight</button>
+                        <button class="conversion-tab" data-conversion="currency">Currency</button>
+                    </div>
+                    
+                    <div class="conversion-form">
+                        <div class="input-group">
+                            <input type="number" id="conversionInput" placeholder="Enter value">
+                            <select id="fromUnit"></select>
+                        </div>
+                        
+                        <div class="conversion-equals">=</div>
+                        
+                        <div class="input-group">
+                            <input type="number" id="conversionResult" readonly>
+                            <select id="toUnit"></select>
+                        </div>
+                        
+                        <button class="convert-btn" id="convertBtn">Convert</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Special Calculations Panel -->
+            <div class="panel" id="special-panel">
+                <div class="special-container">
+                    <div class="special-type">
+                        <button class="special-tab active" data-special="bmi">BMI</button>
+                        <button class="special-tab" data-special="interest">Interest</button>
+                        <button class="special-tab" data-special="percentage">Percentage</button>
+                        <button class="special-tab" data-special="date">Date</button>
+                    </div>
+                    
+                    <!-- BMI Calculator Form -->
+                    <div class="special-form active" id="bmi-form">
+                        <div class="input-group">
+                            <label>Height (cm):</label>
+                            <input type="number" id="bmiHeight" placeholder="Enter height">
+                        </div>
+                        <div class="input-group">
+                            <label>Weight (kg):</label>
+                            <input type="number" id="bmiWeight" placeholder="Enter weight">
+                        </div>
+                        <button class="calculate-btn" id="bmiCalculateBtn">Calculate BMI</button>
+                        <div class="calculation-result" id="bmiResult"></div>
+                    </div>
+                    
+                    <!-- Interest Calculator Form -->
+                    <div class="special-form" id="interest-form">
+                        <div class="input-group">
+                            <label>Interest Type:</label>
+                            <select id="interestType">
+                                <option value="simple">Simple Interest</option>
+                                <option value="compound">Compound Interest</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Principal Amount:</label>
+                            <input type="number" id="interestPrincipal" placeholder="Enter principal">
+                        </div>
+                        <div class="input-group">
+                            <label>Interest Rate (% per year):</label>
+                            <input type="number" id="interestRate" placeholder="Enter rate">
+                        </div>
+                        <div class="input-group">
+                            <label>Time (years):</label>
+                            <input type="number" id="interestTime" placeholder="Enter time">
+                        </div>
+                        <div class="input-group" id="compoundFrequencyGroup" style="display: none;">
+                            <label>Compound Frequency:</label>
+                            <select id="compoundFrequency">
+                                <option value="1">Annually</option>
+                                <option value="2">Semi-annually</option>
+                                <option value="4">Quarterly</option>
+                                <option value="12">Monthly</option>
+                                <option value="365">Daily</option>
+                            </select>
+                        </div>
+                        <button class="calculate-btn" id="interestCalculateBtn">Calculate Interest</button>
+                        <div class="calculation-result" id="interestResult"></div>
+                    </div>
+                    
+                    <!-- Percentage Calculator Form -->
+                    <div class="special-form" id="percentage-form">
+                        <div class="input-group">
+                            <label>Calculation Type:</label>
+                            <select id="percentageType">
+                                <option value="percent">X% of Y</option>
+                                <option value="increase">X% increase of Y</option>
+                                <option value="decrease">X% decrease of Y</option>
+                                <option value="difference">Percentage difference</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="percentValueGroup">
+                            <label>Percentage (%):</label>
+                            <input type="number" id="percentValue" placeholder="Enter percentage">
+                        </div>
+                        <div class="input-group">
+                            <label id="baseValueLabel">Value:</label>
+                            <input type="number" id="baseValue" placeholder="Enter value">
+                        </div>
+                        <div class="input-group" id="secondValueGroup" style="display: none;">
+                            <label>Second Value:</label>
+                            <input type="number" id="secondValue" placeholder="Enter second value">
+                        </div>
+                        <button class="calculate-btn" id="percentageCalculateBtn">Calculate</button>
+                        <div class="calculation-result" id="percentageResult"></div>
+                    </div>
+                    
+                    <!-- Date Calculator Form -->
+                    <div class="special-form" id="date-form">
+                        <div class="input-group">
+                            <label>Calculation Type:</label>
+                            <select id="dateType">
+                                <option value="difference">Days between dates</option>
+                                <option value="add">Add days to date</option>
+                                <option value="subtract">Subtract days from date</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>First Date:</label>
+                            <input type="date" id="firstDate">
+                        </div>
+                        <div class="input-group" id="secondDateGroup">
+                            <label>Second Date:</label>
+                            <input type="date" id="secondDate">
+                        </div>
+                        <div class="input-group" id="daysGroup" style="display: none;">
+                            <label>Number of Days:</label>
+                            <input type="number" id="daysValue" placeholder="Enter days">
+                        </div>
+                        <button class="calculate-btn" id="dateCalculateBtn">Calculate</button>
+                        <div class="calculation-result" id="dateResult"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="calculator-tools">
+            <button class="btn-toggle" id="themeToggle">🌙</button>
+            <button class="btn-tool" id="historyBtn">History</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script src="anime-effects.js"></script>
+</body>
+</html>
