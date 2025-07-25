@@ -172,10 +172,14 @@ body {
 }
 
 .calculator-display {
-    background-color: rgba(26, 26, 26, 0.8);
+    background-color: var(--display-bg);
     padding: 20px;
     text-align: right;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.light-theme .calculator-display {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .history {
@@ -189,6 +193,10 @@ body {
     transition: all 0.3s ease;
 }
 
+.light-theme .history {
+    color: rgba(0, 0, 0, 0.6);
+}
+
 .history:not(:empty) {
     padding: 5px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -200,11 +208,13 @@ body {
     overflow-x: auto;
     white-space: nowrap;
     transition: all 0.3s ease;
+    color: var(--text-color);
 }
 
 .current-input.animate {
-    animation: pulse 0.3s ease-out;
     color: var(--naruto-orange);
+    transform: scale(1.02);
+    transition: all 0.2s ease;
 }
 
 /* Tabs Navigation */

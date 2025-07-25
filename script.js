@@ -44,8 +44,8 @@ class Calculator {
         
         this.activeConversion = 'length';
         
-        // Use default currency rates
-        console.log('Calculator initialized with default rates');
+        // Fetch real-time currency rates
+        this.fetchCurrencyRates();
         
         this.initializeUI();
         this.setupTabs();
@@ -813,9 +813,26 @@ class Calculator {
         // Removed since we're using the built-in conversion panel now
     }
     
-    fetchCurrencyRates() {
-        // Just use the default rates
-        console.log('Using default currency rates');
+    async fetchCurrencyRates() {
+        try {
+            const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+            const data = await response.json();
+            
+            // Update currency rates with real-time data
+            this.conversionRates.currency = {
+                USD: 1,
+                EUR: 1 / data.rates.EUR,
+                GBP: 1 / data.rates.GBP,
+                JPY: 1 / data.rates.JPY,
+                CAD: 1 / data.rates.CAD,
+                AUD: 1 / data.rates.AUD,
+                INR: 1 / data.rates.INR
+            };
+            
+            console.log('Currency rates updated successfully');
+        } catch (error) {
+            console.log('Failed to fetch currency rates, using defaults:', error);
+        }
     }
     
     showNotification(message) {
@@ -878,6 +895,13 @@ class Calculator {
         clearBtn.addEventListener('click', () => {
             this.historyList = [];
             localStorage.removeItem('calculatorHistory');
+            
+            // Remove history badge
+            const badge = document.querySelector('.history-badge');
+            if (badge) {
+                badge.remove();
+            }
+            
             document.body.removeChild(modal);
         });
         
